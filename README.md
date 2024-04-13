@@ -1,5 +1,5 @@
 # Getting Network State as a State Machine via FlowRedux
-
+```
 class NetworkStateMachine(
     private val context: Context
 ) : FlowReduxStateMachine<ConnectionState, Unit>(initialState = defaultConnectionState()) {
@@ -27,8 +27,10 @@ class NetworkStateMachine(
         fun defaultConnectionState(): ConnectionState = ConnectionState.Unavailable
     }
 }
+```
 
 # Observing the State machine and using the as a constructore parameter to the molecule presenter
+```
 class NetworkPresenter(
     private val networkStateMachines: NetworkStateMachine
 ) {
@@ -47,8 +49,10 @@ class NetworkPresenter(
         return connectionState
     }
 }
+```
 
 # Getting Counter State as a State Machine via FlowRedux
+```
 class CounterStateMachine: FlowReduxStateMachine<CounterState, CounterEvent>(initialState = defaultCounterState()) {
     init {
         spec {
@@ -59,8 +63,10 @@ class CounterStateMachine: FlowReduxStateMachine<CounterState, CounterEvent>(ini
         fun defaultCounterState(): CounterState = NotInitialized()
     }
 }
+```
 
 # Observing the State machine and using the as a constructore parameter to the molecule presenter, passing the event to the State Machine via the Presenter
+```
 class CounterPresenter(
     private val counterStateMachine: CounterStateMachine
 ) {
@@ -91,3 +97,4 @@ class CounterPresenter(
         events.tryEmit(event)
     }
 }
+```
