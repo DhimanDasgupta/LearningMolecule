@@ -18,9 +18,10 @@ class NetworkPresenter(
             mutableStateOf(networkStateMachines.immediateConnectedState())
         }
 
+        // Receives the State from the StateMachine
         LaunchedEffect(Unit) {
-            networkStateMachines.state.collect {
-                connectionState = it
+            networkStateMachines.state.collect { connectionStateValue ->
+                connectionState = connectionStateValue
             }
         }
 

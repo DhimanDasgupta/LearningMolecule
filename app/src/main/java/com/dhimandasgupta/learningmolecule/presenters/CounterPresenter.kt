@@ -22,15 +22,17 @@ class CounterPresenter(
             mutableStateOf(CounterStateMachine.defaultCounterState())
         }
 
-        LaunchedEffect(Unit) {
-            events.collect { counterEvent ->
-                counterStateMachine.dispatch(counterEvent)
-            }
-        }
-
+        // Receives the State from the StateMachine
         LaunchedEffect(Unit) {
             counterStateMachine.state.collect { currentState ->
                 counterState = currentState
+            }
+        }
+
+        // Send the Events to the State Machine through Actions
+        LaunchedEffect(Unit) {
+            events.collect { counterEvent ->
+                counterStateMachine.dispatch(counterEvent)
             }
         }
 

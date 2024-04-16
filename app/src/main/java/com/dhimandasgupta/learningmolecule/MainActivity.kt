@@ -4,6 +4,7 @@ import android.app.Activity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.StartOffset
 import androidx.compose.animation.core.animateFloat
@@ -16,7 +17,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.displayCutoutPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -28,6 +28,9 @@ import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -44,14 +47,15 @@ import androidx.compose.ui.unit.dp
 import com.dhimandasgupta.learningmolecule.presenters.CounterPresenter
 import com.dhimandasgupta.learningmolecule.presenters.NetworkPresenter
 import com.dhimandasgupta.learningmolecule.statemachines.CounterStateMachine
-import com.dhimandasgupta.learningmolecule.statemachines.Decrease
-import com.dhimandasgupta.learningmolecule.statemachines.Increase
+import com.dhimandasgupta.learningmolecule.statemachines.DecreaseEvent
+import com.dhimandasgupta.learningmolecule.statemachines.IncreaseEvent
 import com.dhimandasgupta.learningmolecule.statemachines.NetworkStateMachine
 import com.dhimandasgupta.learningmolecule.ui.theme.LearningMoleculeTheme
 
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         setContent {
             val context = LocalContext.current.applicationContext
@@ -69,12 +73,14 @@ class MainActivity : ComponentActivity() {
             }
 
             LearningMoleculeTheme {
+                val activity = LocalContext.current as Activity
+                val windowSizeClass = calculateWindowSizeClass(activity = activity)
+
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.SpaceBetween,
                     modifier = Modifier
                         .systemBarsPadding()
-                        .displayCutoutPadding()
                         .fillMaxSize()
                         .background(colorScheme.primary.copy(alpha = 0.5f)),
                 ) {
@@ -91,10 +97,7 @@ class MainActivity : ComponentActivity() {
                         }
 
                         Spacer(modifier = Modifier.height(24.dp))
-
-                        val activity = LocalContext.current as Activity
-                        val windowWidthSizeClass = calculateWindowSizeClass(activity = activity)
-                        Text(text = "${windowWidthSizeClass.widthSizeClass}, ${windowWidthSizeClass.heightSizeClass}", color = Color.DarkGray, style = typography.labelMedium)
+                        Text(text = "${windowSizeClass.widthSizeClass}, ${windowSizeClass.heightSizeClass}", color = Color.DarkGray, style = typography.labelMedium)
                     }
 
                     val counterState = counterPresenter.uiModel()
@@ -115,8 +118,16 @@ class MainActivity : ComponentActivity() {
                         )
                     }
 
-                    val increment = remember { { counterPresenter.processEvent(Increase) } }
-                    val decrement = remember { { counterPresenter.processEvent(Decrease) } }
+                    val incrementText = remember(key1 = windowSizeClass) {
+                        windowSizeClass.getButtonText("+")
+                    }
+
+                    val decrementText = remember(key1 = windowSizeClass) {
+                        windowSizeClass.getButtonText("-")
+                    }
+
+                    val incrementEvent = remember { { counterPresenter.processEvent(IncreaseEvent) } }
+                    val decrementEvent = remember { { counterPresenter.processEvent(DecreaseEvent) } }
 
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
@@ -126,13 +137,13 @@ class MainActivity : ComponentActivity() {
                             .height(96.dp)
                     ) {
                         IncrementDecrementButton(
-                            text = "++",
-                            onClick = { increment() }
+                            text = incrementText,
+                            onClick = { incrementEvent() }
                         )
 
                         IncrementDecrementButton(
-                            text = "--",
-                            onClick = { decrement() }
+                            text = decrementText,
+                            onClick = { decrementEvent() }
                         )
                     }
                 }
@@ -146,15 +157,13 @@ fun IncrementDecrementButton(
     text: String,
     onClick: () -> Unit
 ) {
-    val textToBeDrawn = remember { text }
-
     Button(
         modifier = Modifier
             .width(156.dp),
         onClick = { onClick() }
     ) {
         Text(
-            text = textToBeDrawn,
+            text = text,
             style = typography.displayLarge
         )
     }
@@ -216,5 +225,10 @@ fun GradientCircle(
     )
 }
 
+private fun WindowSizeClass.getButtonText(
+    text: String
+): String = if (widthSizeClass == WindowWidthSizeClass.Compact || heightSizeClass == WindowHeightSizeClass.Compact) {
+    text
+} else text + text
 
 
