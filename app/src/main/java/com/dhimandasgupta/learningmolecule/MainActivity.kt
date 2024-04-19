@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
@@ -43,6 +44,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.dhimandasgupta.learningmolecule.presenters.CounterPresenter
 import com.dhimandasgupta.learningmolecule.presenters.NetworkPresenter
@@ -91,13 +93,28 @@ class MainActivity : ComponentActivity() {
                         Spacer(modifier = Modifier.height(24.dp))
 
                         val networkState = networkPresenter.uiModel()
-                        when (networkState) {
-                            ConnectionState.Available -> Text(text = "Connected", color = Color.Green, style = typography.headlineMedium)
-                            ConnectionState.Unavailable ->  Text(text = "Disconnected", color = Color.Red, style = typography.headlineLarge)
-                        }
+                        Text(
+                            text = when(networkState) {
+                                ConnectionState.Available -> "Connected"
+                                ConnectionState.Unavailable -> "Disconnected"
+                            },
+                            color = when(networkState) {
+                                ConnectionState.Available -> Color.Green
+                                ConnectionState.Unavailable -> Color.Red
+                            },
+                            style = typography.headlineMedium
+                        )
 
                         Spacer(modifier = Modifier.height(24.dp))
-                        Text(text = "${windowSizeClass.widthSizeClass}, ${windowSizeClass.heightSizeClass}", color = Color.DarkGray, style = typography.labelMedium)
+                        Text(
+                            text = "${windowSizeClass.widthSizeClass}, ${windowSizeClass.heightSizeClass}",
+                            modifier = Modifier
+                                .padding(horizontal = 16.dp)
+                                .fillMaxWidth(),
+                            textAlign = TextAlign.Center,
+                            color = Color.DarkGray,
+                            style = typography.labelMedium
+                        )
                     }
 
                     val counterState = counterPresenter.uiModel()
