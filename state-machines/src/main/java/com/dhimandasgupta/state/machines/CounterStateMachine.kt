@@ -1,4 +1,4 @@
-package com.dhimandasgupta.learningmolecule.statemachines
+package com.dhimandasgupta.state.machines
 
 import androidx.compose.runtime.Immutable
 import com.freeletics.flowredux.dsl.FlowReduxStateMachine

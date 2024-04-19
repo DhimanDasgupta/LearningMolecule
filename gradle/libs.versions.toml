@@ -11,6 +11,8 @@ activityCompose = "1.8.2"
 composeBom = "2024.04.01"
 flow-redux = "1.2.1"
 timber = "5.0.1"
+appcompat = "1.6.1"
+material = "1.11.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -31,9 +33,12 @@ window = { group = "androidx.compose.material3", name = "material3-window-size-c
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 flow-redux-jvm = { module = "com.freeletics.flowredux:flowredux-jvm", version.ref = "flow-redux" }
 flow-redux-compose = { module = "com.freeletics.flowredux:compose", version.ref = "flow-redux" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
+androidLibrary = { id = "com.android.library", version.ref = "agp" }
 jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 molecule = { id = "app.cash.molecule", version.ref = "molecule" }
 

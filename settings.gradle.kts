@@ -21,3 +21,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "LearningMolecule"
 include(":app")
+include(":common-android")
+include(":state-machines")
+include(":molecule-presenter")

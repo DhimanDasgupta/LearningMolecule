@@ -46,13 +46,12 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.dhimandasgupta.learningmolecule.presenters.CounterPresenter
-import com.dhimandasgupta.learningmolecule.presenters.NetworkPresenter
-import com.dhimandasgupta.learningmolecule.statemachines.CounterStateMachine
-import com.dhimandasgupta.learningmolecule.statemachines.DecreaseEvent
-import com.dhimandasgupta.learningmolecule.statemachines.IncreaseEvent
-import com.dhimandasgupta.learningmolecule.statemachines.NetworkStateMachine
+import com.dhimandasgupta.common.android.ConnectionState
+import com.dhimandasgupta.molecule.presenter.CounterPresenter
+import com.dhimandasgupta.molecule.presenter.NetworkPresenter
 import com.dhimandasgupta.learningmolecule.ui.theme.LearningMoleculeTheme
+import com.dhimandasgupta.state.machines.CounterStateMachine
+import com.dhimandasgupta.state.machines.NetworkStateMachine
 
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
@@ -143,8 +142,8 @@ class MainActivity : ComponentActivity() {
                         windowSizeClass.getButtonText("-")
                     }
 
-                    val incrementEvent = remember { { counterPresenter.processEvent(IncreaseEvent) } }
-                    val decrementEvent = remember { { counterPresenter.processEvent(DecreaseEvent) } }
+                    val incrementEvent = remember { { counterPresenter.processEvent(com.dhimandasgupta.state.machines.IncreaseEvent) } }
+                    val decrementEvent = remember { { counterPresenter.processEvent(com.dhimandasgupta.state.machines.DecreaseEvent) } }
 
                     Row(
                         verticalAlignment = Alignment.CenterVertically,

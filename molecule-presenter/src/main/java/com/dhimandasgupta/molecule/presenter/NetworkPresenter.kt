@@ -1,4 +1,4 @@
-package com.dhimandasgupta.learningmolecule.presenters
+package com.dhimandasgupta.molecule.presenter
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -6,14 +6,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import com.dhimandasgupta.learningmolecule.ConnectionState
-import com.dhimandasgupta.learningmolecule.statemachines.NetworkStateMachine
+import com.dhimandasgupta.state.machines.NetworkStateMachine
 
 class NetworkPresenter(
     private val networkStateMachines: NetworkStateMachine
 ) {
     @Composable
-    fun uiModel(): ConnectionState {
+    fun uiModel(): com.dhimandasgupta.common.android.ConnectionState {
         var connectionState by remember {
             mutableStateOf(networkStateMachines.immediateConnectedState())
         }
