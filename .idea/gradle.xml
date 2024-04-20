@@ -11,6 +11,7 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/common-android" />
+            <option value="$PROJECT_DIR$/common-compose" />
             <option value="$PROJECT_DIR$/molecule-presenter" />
             <option value="$PROJECT_DIR$/state-machines" />
           </set>

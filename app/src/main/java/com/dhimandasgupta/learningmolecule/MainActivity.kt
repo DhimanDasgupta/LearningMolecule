@@ -24,6 +24,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.typography
@@ -47,6 +49,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.dhimandasgupta.common.android.ConnectionState
+import com.dhimandasgupta.common.compose.LoadingSpinner
+import com.dhimandasgupta.common.compose.NavigationDial
 import com.dhimandasgupta.molecule.presenter.CounterPresenter
 import com.dhimandasgupta.molecule.presenter.NetworkPresenter
 import com.dhimandasgupta.learningmolecule.ui.theme.LearningMoleculeTheme
@@ -83,6 +87,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier
                         .systemBarsPadding()
                         .fillMaxSize()
+                        .verticalScroll(rememberScrollState())
                         .background(colorScheme.primary.copy(alpha = 0.5f)),
                 ) {
                     Column(
@@ -124,6 +129,10 @@ class MainActivity : ComponentActivity() {
                             .fillMaxSize()
                             .weight(1f)
                     ) {
+                        NavigationDial(
+                            modifier = Modifier.size(200.dp)
+                        )
+
                         LoadingSpinner(
                             modifier = Modifier.size(200.dp)
                         )
@@ -183,62 +192,6 @@ fun IncrementDecrementButton(
             style = typography.displayLarge
         )
     }
-}
-
-@Composable
-fun LoadingSpinner(modifier: Modifier = Modifier) {
-    val animation = rememberInfiniteTransition(label = "rotation")
-    val rotation = animation.animateFloat(
-        initialValue = 0f,
-        targetValue = 360f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(durationMillis = 20_000)
-        ), label = "rotation"
-    )
-    Box(modifier = modifier.graphicsLayer { rotationZ = rotation.value }) {
-        GradientCircle(color = Color(0xff1AB9D5))
-        GradientCircle(color = Color(0xff1A74D5), delay = 200)
-        GradientCircle(color = Color(0xff1A4FD5), delay = 400)
-    }
-}
-
-@Composable
-fun GradientCircle(
-    modifier: Modifier = Modifier,
-    color: Color,
-    delay: Int = 0,
-) {
-    val animation = rememberInfiniteTransition(label = "infinite_animation")
-    val rotation = animation.animateFloat(
-        initialValue = 0f,
-        targetValue = 360f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(durationMillis = 3_000, easing = LinearEasing),
-            initialStartOffset = StartOffset(delay)
-        ), label = "gradientCircleRotation"
-    )
-    Box(
-        modifier = modifier
-            .graphicsLayer { rotationX = rotation.value; cameraDistance = 100000f }
-            .fillMaxSize()
-            .drawBehind {
-                drawCircle(
-                    brush = Brush.radialGradient(
-                        colors = listOf(color, Color.Transparent),
-                        center = Offset.Zero,
-                        radius = size.width,
-                    )
-                )
-                drawCircle(
-                    brush = Brush.radialGradient(
-                        colors = listOf(color, Color.Transparent),
-                        center = Offset.Zero,
-                        radius = size.width * 1.5f,
-                    ),
-                    style = Stroke(width = 1f)
-                )
-            }
-    )
 }
 
 private fun WindowSizeClass.getButtonText(
