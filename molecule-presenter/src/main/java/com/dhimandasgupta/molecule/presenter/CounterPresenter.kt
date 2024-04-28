@@ -6,17 +6,21 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import com.dhimandasgupta.state.machines.CounterEvent
+import com.dhimandasgupta.state.machines.CounterState
+import com.dhimandasgupta.state.machines.CounterStateMachine
+import com.dhimandasgupta.state.machines.CounterStateMachine.Companion.defaultCounterState
 import kotlinx.coroutines.flow.MutableSharedFlow
 
 class CounterPresenter(
-    private val counterStateMachine: com.dhimandasgupta.state.machines.CounterStateMachine
+    private val counterStateMachine: CounterStateMachine
 ) {
-    private val events = MutableSharedFlow<com.dhimandasgupta.state.machines.CounterEvent>(extraBufferCapacity = 1)
+    private val events = MutableSharedFlow<CounterEvent>(extraBufferCapacity = 10)
 
     @Composable
-    fun uiModel(): com.dhimandasgupta.state.machines.CounterState {
+    fun uiModel(): CounterState {
         var counterState by remember {
-            mutableStateOf(com.dhimandasgupta.state.machines.CounterStateMachine.defaultCounterState())
+            mutableStateOf(defaultCounterState())
         }
 
         // Receives the State from the StateMachine
@@ -36,7 +40,7 @@ class CounterPresenter(
         return counterState
     }
 
-    fun processEvent(event: com.dhimandasgupta.state.machines.CounterEvent) {
+    fun processEvent(event: CounterEvent) {
         events.tryEmit(event)
     }
 }
