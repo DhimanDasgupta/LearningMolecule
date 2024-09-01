@@ -1,17 +1,17 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
-    alias(libs.plugins.molecule)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
     namespace = "com.dhimandasgupta.learningmolecule"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.dhimandasgupta.learningmolecule"
         minSdk = 26
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -35,19 +35,23 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = JavaVersion.VERSION_17.toString()
     }
     buildFeatures {
         compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.12"
     }
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+}
+
+composeCompiler {
+    enableStrongSkippingMode = true
+
+    reportsDestination = layout.buildDirectory.dir("compose_compiler")
+    // stabilityConfigurationFile = rootProject.layout.projectDirectory.file("stability_config.conf")
 }
 
 dependencies {
@@ -68,6 +72,7 @@ dependencies {
     implementation(libs.flow.redux.jvm)
     implementation(libs.flow.redux.compose)
     implementation(libs.timber)
+    implementation(libs.molecule)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

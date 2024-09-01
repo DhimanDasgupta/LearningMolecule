@@ -1,17 +1,17 @@
 [versions]
-agp = "8.4.0"
-molecule = "1.4.2"
-kotlin = "1.9.23"
+agp = "8.5.2"
+molecule-runtime = "2.0.0"
+kotlin = "2.0.10"
 coreKtx = "1.13.1"
 junit = "4.13.2"
-junitVersion = "1.1.5"
-espressoCore = "3.5.1"
-lifecycleRuntimeKtx = "2.7.0"
-activityCompose = "1.9.0"
-composeBom = "2024.05.00"
+junitVersion = "1.2.1"
+espressoCore = "3.6.1"
+lifecycleRuntimeKtx = "2.8.4"
+activityCompose = "1.9.1"
+composeBom = "2024.08.00"
 flow-redux = "1.2.1"
 timber = "5.0.1"
-appcompat = "1.6.1"
+appcompat = "1.7.0"
 material = "1.12.0"
 
 [libraries]
@@ -35,10 +35,11 @@ flow-redux-jvm = { module = "com.freeletics.flowredux:flowredux-jvm", version.re
 flow-redux-compose = { module = "com.freeletics.flowredux:compose", version.ref = "flow-redux" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+molecule = { group = "app.cash.molecule", name = "molecule-runtime", version.ref = "molecule-runtime" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
 jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-molecule = { id = "app.cash.molecule", version.ref = "molecule" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 

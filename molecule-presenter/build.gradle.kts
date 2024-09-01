@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.jetbrainsKotlinAndroid)
-    alias(libs.plugins.molecule)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -29,8 +29,15 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = JavaVersion.VERSION_17.toString()
     }
+}
+
+composeCompiler {
+    enableStrongSkippingMode = true
+
+    reportsDestination = layout.buildDirectory.dir("compose_compiler")
+    // stabilityConfigurationFile = rootProject.layout.projectDirectory.file("stability_config.conf")
 }
 
 dependencies {
@@ -49,6 +56,7 @@ dependencies {
     implementation(libs.flow.redux.jvm)
     implementation(libs.flow.redux.compose)
     implementation(libs.timber)
+    implementation(libs.molecule)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
