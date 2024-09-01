@@ -2,6 +2,7 @@ package com.dhimandasgupta.state.machines
 
 import android.app.Application
 import android.content.Context
+import com.dhimandasgupta.common.android.ConnectionState
 import com.dhimandasgupta.common.android.currentConnectivityState
 import com.dhimandasgupta.common.android.observeConnectivityAsFlow
 import com.freeletics.flowredux.dsl.FlowReduxStateMachine
@@ -13,20 +14,20 @@ private const val ILLEGAL_ARGUMENT_EXCEPTION_MESSAGE =
 @OptIn(ExperimentalCoroutinesApi::class)
 class NetworkStateMachine(
     private val context: Context
-) : FlowReduxStateMachine<com.dhimandasgupta.common.android.ConnectionState, Unit>(initialState = defaultConnectionState()) {
+) : FlowReduxStateMachine<ConnectionState, Unit>(initialState = defaultConnectionState()) {
     init {
         if (context !is Application) throw IllegalArgumentException(
             ILLEGAL_ARGUMENT_EXCEPTION_MESSAGE
         )
 
         spec {
-            inState<com.dhimandasgupta.common.android.ConnectionState.Unavailable> {
+            inState<ConnectionState.Unavailable> {
                 collectWhileInState(context.observeConnectivityAsFlow()) { connectionState, state ->
                     state.override { connectionState }
                 }
             }
 
-            inState<com.dhimandasgupta.common.android.ConnectionState.Available> {
+            inState<ConnectionState.Available> {
                 collectWhileInState(context.observeConnectivityAsFlow()) { connectionState, state ->
                     state.override { connectionState }
                 }
@@ -34,9 +35,9 @@ class NetworkStateMachine(
         }
     }
 
-    fun immediateConnectedState(): com.dhimandasgupta.common.android.ConnectionState = context.currentConnectivityState
+    fun immediateConnectedState(): ConnectionState = context.currentConnectivityState
 
     companion object {
-        fun defaultConnectionState(): com.dhimandasgupta.common.android.ConnectionState = com.dhimandasgupta.common.android.ConnectionState.Unavailable
+        fun defaultConnectionState(): ConnectionState = ConnectionState.Unavailable
     }
 }

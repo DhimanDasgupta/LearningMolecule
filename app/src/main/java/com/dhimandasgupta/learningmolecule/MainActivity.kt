@@ -5,12 +5,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.StartOffset
-import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.rememberInfiniteTransition
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -39,12 +33,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -55,6 +44,8 @@ import com.dhimandasgupta.molecule.presenter.CounterPresenter
 import com.dhimandasgupta.molecule.presenter.NetworkPresenter
 import com.dhimandasgupta.learningmolecule.ui.theme.LearningMoleculeTheme
 import com.dhimandasgupta.state.machines.CounterStateMachine
+import com.dhimandasgupta.state.machines.DecreaseEvent
+import com.dhimandasgupta.state.machines.IncreaseEvent
 import com.dhimandasgupta.state.machines.NetworkStateMachine
 
 class MainActivity : ComponentActivity() {
@@ -151,9 +142,6 @@ class MainActivity : ComponentActivity() {
                         windowSizeClass.getButtonText("-")
                     }
 
-                    val incrementEvent = remember { { counterPresenter.processEvent(com.dhimandasgupta.state.machines.IncreaseEvent) } }
-                    val decrementEvent = remember { { counterPresenter.processEvent(com.dhimandasgupta.state.machines.DecreaseEvent) } }
-
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween,
@@ -163,12 +151,12 @@ class MainActivity : ComponentActivity() {
                     ) {
                         IncrementDecrementButton(
                             text = incrementText,
-                            onClick = { incrementEvent() }
+                            onClick = { counterPresenter.processEvent(IncreaseEvent) }
                         )
 
                         IncrementDecrementButton(
                             text = decrementText,
-                            onClick = { decrementEvent() }
+                            onClick = { counterPresenter.processEvent(DecreaseEvent) }
                         )
                     }
                 }

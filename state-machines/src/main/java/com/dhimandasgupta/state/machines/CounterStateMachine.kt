@@ -9,7 +9,7 @@ sealed interface CounterState {
     val counter: Int
 }
 
-data class NotInitialized(override var counter: Int = 0): CounterState
+data class Default(override var counter: Int = 0): CounterState
 data class Increasing(override val counter: Int): CounterState
 data class Decreasing(override val counter: Int): CounterState
 
@@ -22,8 +22,8 @@ data object DecreaseEvent: CounterEvent
 class CounterStateMachine: FlowReduxStateMachine<CounterState, CounterEvent>(initialState = defaultCounterState()) {
     init {
         spec {
-            // Definition of Not-Initialized state
-            inState<NotInitialized> {
+            // Definition of Default state
+            inState<Default> {
                 on<IncreaseEvent> { _, state ->
                     state.override { Increasing(counter = state.snapshot.counter + 1) }
                 }
@@ -63,6 +63,6 @@ class CounterStateMachine: FlowReduxStateMachine<CounterState, CounterEvent>(ini
         }
     }
     companion object {
-        fun defaultCounterState(): CounterState = NotInitialized()
+        fun defaultCounterState(): CounterState = Default()
     }
 }
