@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.kotlinx.serialization)
 }
 
 android {
@@ -58,6 +59,8 @@ dependencies {
     implementation(project(":common-android"))
     implementation(project(":common-compose"))
 
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.kotlin.std.lib)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
