@@ -14,12 +14,12 @@ class NetworkPresenter(
 ) {
     @Composable
     fun uiModel(): ConnectionState {
-        var connectionState by remember {
+        var connectionState by remember(key1 = Unit) {
             mutableStateOf(networkStateMachines.immediateConnectedState())
         }
 
         // Receives the State from the StateMachine
-        LaunchedEffect(Unit) {
+        LaunchedEffect(key1 = Unit) {
             networkStateMachines.state.collect { connectionStateValue ->
                 connectionState = connectionStateValue
             }

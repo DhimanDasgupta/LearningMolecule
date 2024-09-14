@@ -19,19 +19,19 @@ class CounterPresenter(
 
     @Composable
     fun uiModel(): CounterState {
-        var counterState by remember {
+        var counterState by remember(key1 = Unit) {
             mutableStateOf(defaultCounterState())
         }
 
         // Receives the State from the StateMachine
-        LaunchedEffect(Unit) {
+        LaunchedEffect(key1 = Unit) {
             counterStateMachine.state.collect { currentState ->
                 counterState = currentState
             }
         }
 
         // Send the Events to the State Machine through Actions
-        LaunchedEffect(Unit) {
+        LaunchedEffect(key1 = Unit) {
             events.collect { counterEvent ->
                 counterStateMachine.dispatch(counterEvent)
             }

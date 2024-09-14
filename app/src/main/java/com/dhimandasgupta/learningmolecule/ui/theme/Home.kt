@@ -35,24 +35,28 @@ import com.dhimandasgupta.common.compose.LoadingSpinner
 import com.dhimandasgupta.common.compose.NavigationDial
 import com.dhimandasgupta.molecule.presenter.CounterPresenter
 import com.dhimandasgupta.molecule.presenter.NetworkPresenter
+import com.dhimandasgupta.molecule.presenter.RunningTimeUiState
 import com.dhimandasgupta.state.machines.CounterStateMachine
 import com.dhimandasgupta.state.machines.DecreaseEvent
 import com.dhimandasgupta.state.machines.IncreaseEvent
 import com.dhimandasgupta.state.machines.NetworkStateMachine
 
 @Composable
-internal fun Home(windowSizeClass: WindowSizeClass) {
+internal fun Home(
+    windowSizeClass: WindowSizeClass,
+    runningTimeUiState: RunningTimeUiState
+) {
     val context = LocalContext.current.applicationContext
-    val networkStateMachine = remember {
+    val networkStateMachine = remember(key1 = Unit) {
         NetworkStateMachine(context = context)
     }
-    val counterStateMachine = remember {
+    val counterStateMachine = remember(key1 = Unit) {
         CounterStateMachine()
     }
-    val networkPresenter = remember {
+    val networkPresenter = remember(key1 = Unit) {
         NetworkPresenter(networkStateMachine)
     }
-    val counterPresenter = remember {
+    val counterPresenter = remember(key1 = Unit) {
         CounterPresenter(counterStateMachine)
     }
 
@@ -74,11 +78,11 @@ internal fun Home(windowSizeClass: WindowSizeClass) {
             val networkState = networkPresenter.uiModel()
             Text(
                 text = when(networkState) {
-                    ConnectionState.Available -> "Connected"
-                    ConnectionState.Unavailable -> "Disconnected"
+                    ConnectionState.Available -> "Connected : ${runningTimeUiState.formattedString}"
+                    ConnectionState.Unavailable -> "Disconnected : ${runningTimeUiState.formattedString}"
                 },
                 color = when(networkState) {
-                    ConnectionState.Available -> Color.Green
+                    ConnectionState.Available -> Color.Green.copy(alpha = 0.5f)
                     ConnectionState.Unavailable -> Color.Red
                 },
                 style = typography.headlineMedium
