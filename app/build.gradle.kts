@@ -48,8 +48,6 @@ android {
 }
 
 composeCompiler {
-    enableStrongSkippingMode = true
-
     reportsDestination = layout.buildDirectory.dir("compose_compiler")
     // stabilityConfigurationFile = rootProject.layout.projectDirectory.file("stability_config.conf")
 }
@@ -69,6 +67,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.window)
+    implementation(libs.navigation.compose)
     implementation(libs.flow.redux.jvm)
     implementation(libs.flow.redux.compose)
     implementation(libs.timber)

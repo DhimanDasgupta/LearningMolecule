@@ -32,10 +32,10 @@ fun NavigationDial(
 
     LaunchedEffect(key1 = rotation) {
         delay(16)
-        rotation += 1f
         if (rotation == 360f) {
             rotation = 0f
         }
+        rotation += 1f
     }
 
     Box(
@@ -54,25 +54,27 @@ private fun DrawScope.drawItemsOnCircle(
     val center = size.center
     val angleSpacing = 360f / itemCount
 
+    val eachRoundedRectSize = radius / 8
+
     rotate(rotationAngle, center) {
         drawCircle(Color.LightGray.copy(alpha = 0.2f), radius, center) // Optional background circle
 
         for (i in 0 until itemCount) {
             val angle = (i * angleSpacing).toDouble().toRadians()
             val itemOffset = Offset(
-                x = (center.x + radius * cos(angle) - 15).toFloat(), // Adjust 15 for item size/spacing
-                y = (center.y + radius * sin(angle) - 15).toFloat()
+                x = (center.x + radius * cos(angle) - eachRoundedRectSize / 2).toFloat(), // Adjust 15 for item size/spacing
+                y = (center.y + radius * sin(angle) - eachRoundedRectSize / 2).toFloat()
             )
 
             drawRoundRect(
-                color = when (i % itemCount) {
+                color = when (i % 5) {
                     0 -> Color.Blue
                     1 -> Color.Red
                     2 -> Color.DarkGray
                     3 -> Color.Magenta
                     else -> Color.Green
                 },
-                size = Size(30f, 30f),
+                size = Size(eachRoundedRectSize, eachRoundedRectSize),
                 topLeft = itemOffset,
                 style = Fill,
                 cornerRadius = CornerRadius(

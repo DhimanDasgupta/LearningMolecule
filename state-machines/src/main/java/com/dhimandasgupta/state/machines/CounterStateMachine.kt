@@ -1,7 +1,7 @@
 package com.dhimandasgupta.state.machines
 
 import androidx.compose.runtime.Immutable
-import com.freeletics.flowredux.dsl.FlowReduxStateMachine
+import com.freeletics.flowredux.dsl.FlowReduxStateMachine as StateMachine
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @Immutable
@@ -19,7 +19,7 @@ data object IncreaseEvent: CounterEvent
 data object DecreaseEvent: CounterEvent
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class CounterStateMachine: FlowReduxStateMachine<CounterState, CounterEvent>(initialState = defaultCounterState()) {
+class CounterStateMachine: StateMachine<CounterState, CounterEvent>(initialState = defaultCounterState()) {
     init {
         spec {
             // Definition of Default state

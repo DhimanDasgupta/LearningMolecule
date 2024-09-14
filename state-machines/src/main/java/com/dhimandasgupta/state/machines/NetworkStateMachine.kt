@@ -3,9 +3,9 @@ package com.dhimandasgupta.state.machines
 import android.app.Application
 import android.content.Context
 import com.dhimandasgupta.common.android.ConnectionState
+import com.freeletics.flowredux.dsl.FlowReduxStateMachine as StateMachine
 import com.dhimandasgupta.common.android.currentConnectivityState
 import com.dhimandasgupta.common.android.observeConnectivityAsFlow
-import com.freeletics.flowredux.dsl.FlowReduxStateMachine
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 private const val ILLEGAL_ARGUMENT_EXCEPTION_MESSAGE =
@@ -14,7 +14,7 @@ private const val ILLEGAL_ARGUMENT_EXCEPTION_MESSAGE =
 @OptIn(ExperimentalCoroutinesApi::class)
 class NetworkStateMachine(
     private val context: Context
-) : FlowReduxStateMachine<ConnectionState, Unit>(initialState = defaultConnectionState()) {
+) : StateMachine<ConnectionState, Unit>(initialState = defaultConnectionState()) {
     init {
         if (context !is Application) throw IllegalArgumentException(
             ILLEGAL_ARGUMENT_EXCEPTION_MESSAGE

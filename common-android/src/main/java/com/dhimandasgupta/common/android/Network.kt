@@ -1,6 +1,5 @@
 package com.dhimandasgupta.common.android
 
-import android.app.Activity
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
@@ -9,7 +8,6 @@ import android.net.NetworkRequest
 import androidx.compose.runtime.Immutable
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
-import java.lang.IllegalArgumentException
 
 @Immutable
 sealed class ConnectionState {
@@ -22,8 +20,6 @@ sealed class ConnectionState {
  */
 val Context.currentConnectivityState: ConnectionState
     get() {
-        if (this is Activity) throw IllegalArgumentException("Context must be Application Context")
-
         val connectivityManager =
             getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         return getCurrentConnectivityState(connectivityManager)
@@ -43,8 +39,6 @@ private fun getCurrentConnectivityState(
  * Network Utility to observe availability or unavailability of Internet connection
  */
 fun Context.observeConnectivityAsFlow() = callbackFlow {
-    if (this is Activity) throw IllegalArgumentException("Context must be Application Context")
-
     val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
     val callback = networkCallback { connectionState -> trySend(connectionState) }
