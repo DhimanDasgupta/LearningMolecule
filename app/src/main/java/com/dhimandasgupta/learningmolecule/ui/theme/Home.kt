@@ -78,8 +78,8 @@ internal fun Home(
             val networkState = networkPresenter.uiModel()
             Text(
                 text = when(networkState) {
-                    ConnectionState.Available -> "Connected : ${runningTimeUiState.formattedString}"
-                    ConnectionState.Unavailable -> "Disconnected : ${runningTimeUiState.formattedString}"
+                    ConnectionState.Available -> "Connected : ${runningTimeUiState.formattedTime}"
+                    ConnectionState.Unavailable -> "Disconnected : ${runningTimeUiState.formattedTime}"
                 },
                 color = when(networkState) {
                     ConnectionState.Available -> Color.Green.copy(alpha = 0.5f)

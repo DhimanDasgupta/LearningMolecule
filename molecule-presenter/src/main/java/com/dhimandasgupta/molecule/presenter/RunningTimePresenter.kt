@@ -12,13 +12,13 @@ import kotlin.time.DurationUnit
 import kotlin.time.toDuration
 
 @Immutable
-data class RunningTimeUiState(var formattedString: String)
+data class RunningTimeUiState(var formattedTime: String)
 
 class RunningTimePresenter(
     private val runningTimeStateMachine: RunningTimeStateMachine
 ) {
     companion object {
-        fun defaultRunningTimeUiState() = RunningTimeUiState(formattedString = "00:00:00")
+        fun defaultRunningTimeUiState() = RunningTimeUiState(formattedTime = "00:00:00")
     }
 
     @Composable
@@ -33,7 +33,7 @@ class RunningTimePresenter(
                 val duration = currentState.runningTime.toDuration(DurationUnit.MILLISECONDS)
                 duration.toComponents { hours, minutes, seconds, _ ->
                     runningTimeUiState = RunningTimeUiState(
-                        formattedString = "${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}"
+                        formattedTime = "${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}"
                     )
                 }
             }
