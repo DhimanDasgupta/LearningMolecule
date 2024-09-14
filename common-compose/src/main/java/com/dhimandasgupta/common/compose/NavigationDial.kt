@@ -1,13 +1,15 @@
 package com.dhimandasgupta.common.compose
 
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.CornerRadius
@@ -18,7 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.drawscope.rotate
-import kotlinx.coroutines.delay
+import androidx.compose.ui.graphics.graphicsLayer
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
@@ -28,20 +30,26 @@ fun NavigationDial(
     modifier: Modifier
 ) {
     val numberOfItems by remember { mutableIntStateOf(10) }
-    var rotation by remember { mutableFloatStateOf(0f) }
-
-    LaunchedEffect(key1 = rotation) {
-        delay(16)
-        if (rotation == 360f) {
-            rotation = 0f
-        }
-        rotation += 1f
-    }
+    val infiniteTransition = rememberInfiniteTransition(label = "infiniteTransition")
+    val angle by infiniteTransition.animateFloat(
+        initialValue = 0F,
+        targetValue = 360F,
+        animationSpec = infiniteRepeatable(
+            animation = tween(
+                durationMillis = 9000,
+                easing = LinearEasing
+            )
+        ),
+        label = "rotationAnimation"
+    )
 
     Box(
         modifier = modifier
+            .graphicsLayer {
+                rotationZ = angle
+            }
             .drawWithContent {
-                drawItemsOnCircle(numberOfItems, rotation)
+                drawItemsOnCircle(numberOfItems)
             }
     )
 }
