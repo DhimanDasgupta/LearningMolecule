@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
+import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import com.dhimandasgupta.learningmolecule.ui.theme.LearningMoleculeTheme
 
@@ -19,7 +20,7 @@ class MainActivity : ComponentActivity() {
             val activity = LocalContext.current as Activity
             val windowSizeClass = calculateWindowSizeClass(activity = activity)
 
-            LearningMoleculeTheme { AppNavigation(windowSizeClass) }
+            LearningMoleculeTheme { AppNavigation(remember(windowSizeClass) { windowSizeClass }) }
         }
     }
 }

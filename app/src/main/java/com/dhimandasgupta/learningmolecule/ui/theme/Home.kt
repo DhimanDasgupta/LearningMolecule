@@ -27,38 +27,25 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.dhimandasgupta.common.android.ConnectionState
 import com.dhimandasgupta.common.compose.LoadingSpinner
 import com.dhimandasgupta.common.compose.NavigationDial
-import com.dhimandasgupta.molecule.presenter.CounterPresenter
-import com.dhimandasgupta.molecule.presenter.NetworkPresenter
 import com.dhimandasgupta.molecule.presenter.RunningTimeUiState
-import com.dhimandasgupta.state.machines.CounterStateMachine
+import com.dhimandasgupta.state.machines.CounterEvent
+import com.dhimandasgupta.state.machines.CounterState
 import com.dhimandasgupta.state.machines.DecreaseEvent
 import com.dhimandasgupta.state.machines.IncreaseEvent
-import com.dhimandasgupta.state.machines.NetworkStateMachine
 
 @Composable
 internal fun Home(
     windowSizeClass: WindowSizeClass,
-    runningTimeUiState: RunningTimeUiState
+    runningTimeUiState: RunningTimeUiState,
+    connectedState: ConnectionState,
+    counterState: CounterState,
+    processCounterEvent : (CounterEvent) -> Unit
 ) {
-    val context = LocalContext.current.applicationContext
-    val networkStateMachine = remember(key1 = Unit) {
-        NetworkStateMachine(context = context)
-    }
-    val counterStateMachine = remember(key1 = Unit) {
-        CounterStateMachine()
-    }
-    val networkPresenter = remember(key1 = Unit) {
-        NetworkPresenter(networkStateMachine)
-    }
-    val counterPresenter = remember(key1 = Unit) {
-        CounterPresenter(counterStateMachine)
-    }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -75,13 +62,12 @@ internal fun Home(
         ) {
             Spacer(modifier = Modifier.height(24.dp))
 
-            val networkState = networkPresenter.uiModel()
             Text(
-                text = when(networkState) {
+                text = when(connectedState) {
                     ConnectionState.Available -> "Connected : ${runningTimeUiState.formattedTime}"
                     ConnectionState.Unavailable -> "Disconnected : ${runningTimeUiState.formattedTime}"
                 },
-                color = when(networkState) {
+                color = when(connectedState) {
                     ConnectionState.Available -> Color.Green.copy(alpha = 0.5f)
                     ConnectionState.Unavailable -> Color.Red
                 },
@@ -99,8 +85,6 @@ internal fun Home(
                 style = typography.labelMedium
             )
         }
-
-        val counterState = counterPresenter.uiModel()
 
         Box(
             contentAlignment = Alignment.Center,
@@ -139,12 +123,12 @@ internal fun Home(
         ) {
             IncrementDecrementButton(
                 text = incrementText,
-                onClick = { counterPresenter.processEvent(IncreaseEvent) }
+                onClick = { processCounterEvent(IncreaseEvent) }
             )
 
             IncrementDecrementButton(
                 text = decrementText,
-                onClick = { counterPresenter.processEvent(DecreaseEvent) }
+                onClick = { processCounterEvent(DecreaseEvent) }
             )
         }
     }
