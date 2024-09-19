@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
@@ -46,7 +45,6 @@ internal fun Home(
     counterState: CounterState,
     processCounterEvent : (CounterEvent) -> Unit
 ) {
-
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween,
@@ -68,17 +66,17 @@ internal fun Home(
                     ConnectionState.Unavailable -> "Disconnected : ${runningTimeUiState.formattedTime}"
                 },
                 color = when(connectedState) {
-                    ConnectionState.Available -> Color.Green.copy(alpha = 0.5f)
-                    ConnectionState.Unavailable -> Color.Red
+                    ConnectionState.Available -> colorScheme.primaryContainer
+                    ConnectionState.Unavailable -> colorScheme.errorContainer
                 },
                 style = typography.headlineMedium
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(12.dp))
             Text(
                 text = "${windowSizeClass.widthSizeClass}, ${windowSizeClass.heightSizeClass}",
                 modifier = Modifier
-                    .padding(horizontal = 16.dp)
+                    .padding(horizontal = 16.dp, vertical = 4.dp)
                     .fillMaxWidth(),
                 textAlign = TextAlign.Center,
                 color = Color.DarkGray,
@@ -93,11 +91,11 @@ internal fun Home(
                 .weight(1f)
         ) {
             LoadingSpinner(
-                modifier = Modifier.size(200.dp)
+                modifier = Modifier.fillMaxSize()
             )
 
             NavigationDial(
-                modifier = Modifier.size(200.dp)
+                modifier = Modifier.fillMaxSize()
             )
 
             Text(
@@ -135,7 +133,7 @@ internal fun Home(
 }
 
 @Composable
-fun IncrementDecrementButton(
+private fun IncrementDecrementButton(
     text: String,
     onClick: () -> Unit
 ) {

@@ -1,8 +1,8 @@
 package com.dhimandasgupta.learningmolecule
 
-import android.content.Context
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
@@ -29,23 +29,23 @@ interface NavigationRoute
 object HomeRoute : NavigationRoute
 
 internal fun NavGraphBuilder.homeGraph(
-    context: Context,
     windowSizeClass: WindowSizeClass,
     runningUiState: RunningTimeUiState
 ) = navigation<HomeGraph>(startDestination = HomeRoute) {
     // Home Route
     homeRoute(
-        context = context,
         windowSizeClass = windowSizeClass,
         runningUiState = runningUiState
     )
 }
 
 private fun NavGraphBuilder.homeRoute(
-    context: Context,
     windowSizeClass: WindowSizeClass,
     runningUiState: RunningTimeUiState
 ) = composable<HomeRoute> {
+    // Application Context if needed by individual Navigation Graph or Composable
+    val context = LocalContext.current.applicationContext
+
     val networkStateMachine = remember(key1 = Unit) {
         NetworkStateMachine(context = context)
     }
