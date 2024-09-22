@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.dhimandasgupta.molecule.presenter"
+    namespace = "com.dhimandasgupta.core"
     compileSdk = 34
 
     defaultConfig {
@@ -40,7 +40,6 @@ composeCompiler {
 }
 
 dependencies {
-    implementation(project(":core"))
     implementation(project(":common-android"))
     implementation(project(":state-machines"))
 
@@ -57,7 +56,6 @@ dependencies {
     implementation(libs.flow.redux.compose)
     implementation(libs.timber)
     implementation(libs.molecule)
-    implementation(libs.rin)
 
     implementation(libs.kotlininject.runtime)
     implementation(libs.kotlininject.compiler)

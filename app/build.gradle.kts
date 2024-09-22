@@ -55,6 +55,7 @@ composeCompiler {
 }
 
 dependencies {
+    implementation(project(":core"))
     implementation(project(":molecule-presenter"))
     implementation(project(":state-machines"))
     implementation(project(":common-android"))

@@ -4,12 +4,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.dhimandasgupta.state.machines.CounterEvent
 import com.dhimandasgupta.state.machines.CounterState
 import com.dhimandasgupta.state.machines.CounterStateMachine
 import com.dhimandasgupta.state.machines.CounterStateMachine.Companion.defaultCounterState
+import io.github.takahirom.rin.rememberRetained
 import kotlinx.coroutines.flow.MutableSharedFlow
 
 class CounterPresenter(
@@ -19,9 +19,7 @@ class CounterPresenter(
 
     @Composable
     fun uiModel(): CounterState {
-        var counterState by remember(key1 = Unit) {
-            mutableStateOf(defaultCounterState())
-        }
+        var counterState by rememberRetained { mutableStateOf(defaultCounterState()) }
 
         // Receives the State from the StateMachine
         LaunchedEffect(key1 = Unit) {
