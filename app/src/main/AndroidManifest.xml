@@ -16,6 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LearningMolecule"
         tools:targetApi="31">
+
+        <profileable android:shell="true" android:enabled="true"  />
+
         <activity
             android:name=".MainActivity"
             android:configChanges="colorMode|density|fontScale|keyboard|keyboardHidden|layoutDirection|locale|mcc|mnc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|touchscreen|uiMode"

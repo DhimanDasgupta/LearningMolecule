@@ -1,5 +1,5 @@
 [versions]
-agp = "8.6.0"
+agp = "8.6.1"
 molecule-runtime = "2.0.0"
 kotlin = "2.0.20"
 kotlinx-serialization-json = "1.7.2"
@@ -7,14 +7,16 @@ coreKtx = "1.13.1"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
-lifecycleRuntimeKtx = "2.8.5"
+lifecycleRuntimeKtx = "2.8.6"
 activityCompose = "1.9.2"
-composeBom = "2024.09.01"
+composeBom = "2024.09.02"
 flow-redux = "1.2.1"
 timber = "5.0.1"
 appcompat = "1.7.0"
 material = "1.12.0"
-navigation-compose = "2.8.0"
+navigation-compose = "2.8.1"
+ksp = "2.0.20-1.0.25"
+kotlin-inject = "0.7.2"
 
 [libraries]
 kotlin-std-lib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
@@ -41,6 +43,8 @@ flow-redux-jvm = { module = "com.freeletics.flowredux:flowredux-jvm", version.re
 flow-redux-compose = { module = "com.freeletics.flowredux:compose", version.ref = "flow-redux" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 molecule = { group = "app.cash.molecule", name = "molecule-runtime", version.ref = "molecule-runtime" }
+kotlininject-compiler = { module = "me.tatarka.inject:kotlin-inject-compiler-ksp", version.ref = "kotlin-inject" }
+kotlininject-runtime = { module = "me.tatarka.inject:kotlin-inject-runtime", version.ref = "kotlin-inject" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
@@ -48,4 +52,6 @@ androidLibrary = { id = "com.android.library", version.ref = "agp" }
 jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlinx-serialization = { id  = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin"}
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 
