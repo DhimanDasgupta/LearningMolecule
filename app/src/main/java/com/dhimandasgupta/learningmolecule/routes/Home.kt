@@ -1,6 +1,7 @@
-package com.dhimandasgupta.learningmolecule.ui.theme
+package com.dhimandasgupta.learningmolecule.routes
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
@@ -29,6 +31,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.dhimandasgupta.common.android.ConnectionState
+import com.dhimandasgupta.common.compose.LineSliderImpl
 import com.dhimandasgupta.common.compose.LoadingSpinner
 import com.dhimandasgupta.common.compose.NavigationDial
 import com.dhimandasgupta.molecule.presenter.RunningTimeUiState
@@ -43,16 +46,18 @@ internal fun Home(
     runningTimeUiState: RunningTimeUiState,
     connectedState: ConnectionState,
     counterState: CounterState,
-    processCounterEvent : (CounterEvent) -> Unit
+    navigateToDial: () -> Unit = {},
+    processCounterEvent: (CounterEvent) -> Unit,
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween,
-        modifier = Modifier
-            .systemBarsPadding()
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .background(colorScheme.primary.copy(alpha = 0.5f)),
+        modifier =
+            Modifier
+                .systemBarsPadding()
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .background(colorScheme.primary.copy(alpha = 0.5f)),
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -61,98 +66,115 @@ internal fun Home(
             Spacer(modifier = Modifier.height(24.dp))
 
             Text(
-                text = when(connectedState) {
-                    ConnectionState.Available -> "Connected : ${runningTimeUiState.formattedTime}"
-                    ConnectionState.Unavailable -> "Disconnected : ${runningTimeUiState.formattedTime}"
-                },
-                color = when(connectedState) {
-                    ConnectionState.Available -> colorScheme.primaryContainer
-                    ConnectionState.Unavailable -> colorScheme.errorContainer
-                },
-                style = typography.headlineMedium
+                text =
+                    when (connectedState) {
+                        ConnectionState.Available -> "Connected : ${runningTimeUiState.formattedTime}"
+                        ConnectionState.Unavailable -> "Disconnected : ${runningTimeUiState.formattedTime}"
+                    },
+                color =
+                    when (connectedState) {
+                        ConnectionState.Available -> colorScheme.primaryContainer
+                        ConnectionState.Unavailable -> colorScheme.errorContainer
+                    },
+                style = typography.headlineMedium,
+                modifier = Modifier.clickable { navigateToDial() },
             )
 
             Spacer(modifier = Modifier.height(12.dp))
             Text(
                 text = "${windowSizeClass.widthSizeClass}, ${windowSizeClass.heightSizeClass}",
-                modifier = Modifier
-                    .padding(horizontal = 16.dp, vertical = 4.dp)
-                    .fillMaxWidth(),
+                modifier =
+                    Modifier
+                        .padding(horizontal = 16.dp, vertical = 4.dp)
+                        .fillMaxWidth(),
                 textAlign = TextAlign.Center,
                 color = Color.DarkGray,
-                style = typography.labelMedium
+                style = typography.labelMedium,
             )
         }
 
         Box(
             contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .fillMaxSize()
-                .weight(1f)
+            modifier =
+                Modifier
+                    .size(200.dp),
         ) {
             LoadingSpinner(
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize(),
             )
 
             NavigationDial(
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize(),
             )
 
             Text(
                 text = "${counterState.counter}",
-                style = typography.displayLarge
+                style = typography.displayLarge,
             )
         }
 
-        val incrementText = remember(key1 = windowSizeClass) {
-            windowSizeClass.getButtonText("+")
-        }
+        val incrementText =
+            remember(key1 = windowSizeClass) {
+                windowSizeClass.getButtonText("+")
+            }
 
-        val decrementText = remember(key1 = windowSizeClass) {
-            windowSizeClass.getButtonText("-")
-        }
+        val decrementText =
+            remember(key1 = windowSizeClass) {
+                windowSizeClass.getButtonText("-")
+            }
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(96.dp)
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(96.dp),
         ) {
             IncrementDecrementButton(
                 text = incrementText,
-                onClick = { processCounterEvent(IncreaseEvent) }
+                onClick = { processCounterEvent(IncreaseEvent) },
             )
 
             IncrementDecrementButton(
                 text = decrementText,
-                onClick = { processCounterEvent(DecreaseEvent) }
+                onClick = { processCounterEvent(DecreaseEvent) },
             )
         }
+
+        LineSliderImpl(
+            modifier =
+                Modifier
+                    .padding(16.dp)
+                    .fillMaxWidth()
+                    .wrapContentSize(align = Alignment.Center),
+        )
     }
 }
 
 @Composable
 private fun IncrementDecrementButton(
     text: String,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     Button(
-        modifier = Modifier
-            .padding(16.dp)
-            .wrapContentSize(align = Alignment.Center),
-        onClick = { onClick() }
+        modifier =
+            Modifier
+                .padding(16.dp)
+                .wrapContentSize(align = Alignment.Center),
+        onClick = { onClick() },
     ) {
         Text(
             text = text,
             style = typography.displaySmall,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
         )
     }
 }
 
-private fun WindowSizeClass.getButtonText(
-    text: String
-): String = if (widthSizeClass == WindowWidthSizeClass.Compact || heightSizeClass == WindowHeightSizeClass.Compact) {
-    text
-} else text + text
+private fun WindowSizeClass.getButtonText(text: String): String =
+    if (widthSizeClass == WindowWidthSizeClass.Compact || heightSizeClass == WindowHeightSizeClass.Compact) {
+        text
+    } else {
+        text + text
+    }

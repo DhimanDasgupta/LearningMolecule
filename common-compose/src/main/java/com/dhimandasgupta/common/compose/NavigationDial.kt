@@ -26,37 +26,37 @@ import kotlin.math.cos
 import kotlin.math.sin
 
 @Composable
-fun NavigationDial(
-    modifier: Modifier
-) {
+fun NavigationDial(modifier: Modifier) {
     val numberOfItems by remember { mutableIntStateOf(10) }
     val infiniteTransition = rememberInfiniteTransition(label = "infiniteTransition")
     val angle by infiniteTransition.animateFloat(
         initialValue = 0F,
         targetValue = 360F,
-        animationSpec = infiniteRepeatable(
-            animation = tween(
-                durationMillis = 9000,
-                easing = LinearEasing
-            )
-        ),
-        label = "rotationAnimation"
+        animationSpec =
+            infiniteRepeatable(
+                animation =
+                    tween(
+                        durationMillis = 9000,
+                        easing = LinearEasing,
+                    ),
+            ),
+        label = "rotationAnimation",
     )
 
     Box(
-        modifier = modifier
-            .graphicsLayer {
-                rotationZ = angle
-            }
-            .drawWithContent {
-                drawItemsOnCircle(numberOfItems)
-            }
+        modifier =
+            modifier
+                .graphicsLayer {
+                    rotationZ = angle
+                }.drawWithContent {
+                    drawItemsOnCircle(numberOfItems)
+                },
     )
 }
 
 private fun DrawScope.drawItemsOnCircle(
     itemCount: Int,
-    rotationAngle: Float = 0f
+    rotationAngle: Float = 0f,
 ) {
     val radius = size.minDimension / 2
     val center = size.center
@@ -69,26 +69,29 @@ private fun DrawScope.drawItemsOnCircle(
 
         for (i in 0 until itemCount) {
             val angle = (i * angleSpacing).toDouble().toRadians()
-            val itemOffset = Offset(
-                x = (center.x + radius * cos(angle) - eachRoundedRectSize / 2).toFloat(), // Adjust 15 for item size/spacing
-                y = (center.y + radius * sin(angle) - eachRoundedRectSize / 2).toFloat()
-            )
+            val itemOffset =
+                Offset(
+                    x = (center.x + radius * cos(angle) - eachRoundedRectSize / 2).toFloat(), // Adjust 15 for item size/spacing
+                    y = (center.y + radius * sin(angle) - eachRoundedRectSize / 2).toFloat(),
+                )
 
             drawRoundRect(
-                color = when (i % 5) {
-                    0 -> Color.Blue
-                    1 -> Color.Red
-                    2 -> Color.DarkGray
-                    3 -> Color.Magenta
-                    else -> Color.Green
-                },
+                color =
+                    when (i % 5) {
+                        0 -> Color.Blue
+                        1 -> Color.Red
+                        2 -> Color.DarkGray
+                        3 -> Color.Magenta
+                        else -> Color.Green
+                    },
                 size = Size(eachRoundedRectSize, eachRoundedRectSize),
                 topLeft = itemOffset,
                 style = Fill,
-                cornerRadius = CornerRadius(
-                    x = 10f,
-                    y = 10f
-                )
+                cornerRadius =
+                    CornerRadius(
+                        x = 10f,
+                        y = 10f,
+                    ),
             )
         }
     }

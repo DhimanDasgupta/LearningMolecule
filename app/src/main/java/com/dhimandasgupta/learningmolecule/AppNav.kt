@@ -5,18 +5,24 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import com.dhimandasgupta.learningmolecule.graphs.DialRoute
+import com.dhimandasgupta.learningmolecule.graphs.HomeGraph
+import com.dhimandasgupta.learningmolecule.graphs.dialGraph
+import com.dhimandasgupta.learningmolecule.graphs.homeGraph
 import com.dhimandasgupta.molecule.presenter.RunningTimePresenter
 import com.dhimandasgupta.state.machines.RunningTimeStateMachine
 
 @Composable
 fun AppNavigation(windowSizeClass: WindowSizeClass) {
     // App Specific Data from StateMachine
-    val runningTimeStateMachine = remember(key1 = Unit) {
-        RunningTimeStateMachine()
-    }
-    val runningTimePresenter = remember(key1 = Unit) {
-        RunningTimePresenter(runningTimeStateMachine)
-    }
+    val runningTimeStateMachine =
+        remember(key1 = Unit) {
+            RunningTimeStateMachine()
+        }
+    val runningTimePresenter =
+        remember(key1 = Unit) {
+            RunningTimePresenter(runningTimeStateMachine)
+        }
 
     val runningUiState = runningTimePresenter.uiModel()
 
@@ -25,7 +31,11 @@ fun AppNavigation(windowSizeClass: WindowSizeClass) {
         // Home Graph
         homeGraph(
             windowSizeClass = windowSizeClass,
-            runningUiState = runningUiState
+            runningUiState = runningUiState,
+            navigateToDial = { navController.navigate(DialRoute) },
+        )
+        dialGraph(
+            windowSizeClass = windowSizeClass,
         )
     }
 }
